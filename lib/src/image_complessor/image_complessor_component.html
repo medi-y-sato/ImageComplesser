@@ -1,0 +1,21 @@
+<!-- Components info: https://webdev.dartlang.org/components -->
+
+<div>
+  <input
+    style="display: none"
+    type="file"
+    (change)="onFileChanged($event)"
+    #fileInput
+  />
+  <button (click)="fileInput.click()">Select File</button>
+
+  <dl>
+    <dt>source</dt>
+    <dd><img id="sourceImage" /></dd>
+  </dl>
+
+  <dl *ngFor="let result of results">
+    <dt>{{ result }}</dt>
+    <dd><img id="level{{ result }}" /></dd>
+  </dl>
+</div>
