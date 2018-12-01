@@ -1,21 +1,30 @@
 <!-- Components info: https://webdev.dartlang.org/components -->
 
+<h1>jpg圧縮量比較ツール</h1>
+
 <div>
   <input
     style="display: none"
     type="file"
+    accept="image/png"
     (change)="onFileChanged($event)"
     #fileInput
   />
   <button (click)="fileInput.click()">Select File</button>
 
-  <dl>
-    <dt>source</dt>
-    <dd><img id="sourceImage" /></dd>
-  </dl>
-
-  <dl *ngFor="let result of results">
-    <dt>{{ result }}</dt>
-    <dd><img id="level{{ result }}" /></dd>
-  </dl>
+  <div>
+    <div class="header">
+      source / size :
+      <span *ngIf="source_bytes != null">{{ source_bytes }}</span>
+    </div>
+    <div class="image"><img id="sourceImage" /></div>
+  </div>
+  <div *ngIf="results != null">
+    <div class="result" *ngFor="let result of results">
+      <div class="header">
+        quality : {{ result.id }} / size : {{ result.bytes }}
+      </div>
+      <div class="body"><img class="result" id="level{{ result.id }}" /></div>
+    </div>
+  </div>
 </div>
