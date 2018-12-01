@@ -1,41 +1,40 @@
 import 'dart:async';
 import 'dart:html';
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
 import 'dart:convert';
 import 'package:image/image.dart';
-
-import 'image_complessor_service.dart';
 
 @Component(
     selector: 'image-complessor',
     styleUrls: ['image_complessor_component.css'],
     templateUrl: 'image_complessor_component.html',
     directives: [
-      MaterialCheckboxComponent,
-      MaterialFabComponent,
-      MaterialIconComponent,
-      materialInputDirectives,
       NgFor,
       NgIf,
     ],
-    providers: [ClassProvider(ImageComplessorService)])
+    providers: [])
 class ImageComplessorComponent implements OnInit {
-  final ImageComplessorService imageComplessorService;
-
   var selectedFile;
-  List<String> results = [];
+  List<Result> results;
+  int source_bytes;
 
-  ImageComplessorComponent(this.imageComplessorService);
+  ImageComplessorComponent();
 
   @override
   Future<Null> ngOnInit() async {
+    resultsInit();
+  }
+
+  resultsInit() {
+    results = [];
     for (var i = 10; i <= 100; i = i + 10) {
-      results.add(i.toString());
+      results.add(Result(i, 0));
     }
   }
 
   onFileChanged(event) {
+    resultsInit();
+
     selectedFile = event.target.files[0];
 
     FileReader reader = new FileReader();
@@ -48,6 +47,7 @@ class ImageComplessorComponent implements OnInit {
 
       ImageElement sourceImg = document.querySelector("#sourceImage");
       sourceImg.src = 'data:image/png;base64,${source64}';
+      source_bytes = source64.length;
 
       for (var i = 10; i <= 100; i = i + 10) {
         JpegEncoder jpegEncoder = new JpegEncoder(quality: i);
@@ -56,9 +56,23 @@ class ImageComplessorComponent implements OnInit {
 
         ImageElement target = document.querySelector("#level${i}");
         target.src = 'data:image/jpeg;base64,${Encoded64}';
+
+        results.forEach((result) {
+          if (result.id == i) {
+            result.bytes = Encoded64.length;
+          }
+        });
       }
     });
   }
 
   onUpload() {}
+}
+
+class Result {
+  int id;
+  int bytes;
+  Result(this.id, this.bytes);
+  @override
+  String toString() => '$id: $bytes';
 }
