@@ -27,7 +27,7 @@ class ImageComplessorComponent implements OnInit {
 
   resultsInit() {
     results = [];
-    for (var i = 10; i <= 100; i = i + 10) {
+    for (int i = 10; i <= 100; i = i + 10) {
       results.add(Result(i, 0));
     }
   }
@@ -43,16 +43,16 @@ class ImageComplessorComponent implements OnInit {
       List<int> sourceData = reader.result;
       Image sourceImage = decodeImage(sourceData);
 
-      var source64 = new Base64Encoder().convert(sourceData);
+      String source64 = new Base64Encoder().convert(sourceData);
 
       ImageElement sourceImg = document.querySelector("#sourceImage");
       sourceImg.src = 'data:image/png;base64,${source64}';
       source_bytes = source64.length;
 
-      for (var i = 10; i <= 100; i = i + 10) {
+      for (int i = 10; i <= 100; i = i + 10) {
         JpegEncoder jpegEncoder = new JpegEncoder(quality: i);
         List EncodedBinary = jpegEncoder.encodeImage(sourceImage);
-        var Encoded64 = new Base64Encoder().convert(EncodedBinary);
+        String Encoded64 = new Base64Encoder().convert(EncodedBinary);
 
         ImageElement target = document.querySelector("#level${i}");
         target.src = 'data:image/jpeg;base64,${Encoded64}';
