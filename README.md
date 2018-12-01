@@ -10,3 +10,11 @@ https://webdev.dartlang.org/guides/get-started
 > pub get
 > webdev serve
 ```
+
+これでローカルのサーバが立ち上がる
+
+```powershell
+> webdev build
+```
+
+とすると `./build/` 以下に生成されるので、Publish するなり何なり
